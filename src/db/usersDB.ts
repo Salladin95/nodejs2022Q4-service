@@ -2,16 +2,15 @@ import { resolve } from 'path';
 
 import { User } from 'src/users/contracts';
 import { usersGurard } from 'src/users/contracts/userGuard';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import {
   notFoundMsg,
   passwordsDontMatchMsg,
   safeJsonParse,
   userAlreadyExistMsg,
 } from 'src/utils';
-import createUser from './createUser';
+import { CreateUserDto, UpdateUserDto } from '../users/dto';
 
+import createUser from './createUser';
 import loadJson from './loadJson';
 import writeJson from './writeJson';
 
@@ -22,15 +21,17 @@ const usersDB = () => {
     users = <User[]>safeJsonParse(usersGurard)(unparsedUsers);
   });
 
+  const getUser = (id: string) => {
+    const user = users.find((user) => user.id === id);
+    if (!user) {
+      throw new Error(notFoundMsg);
+    }
+    return user;
+  };
+
   return {
     getUsers: () => users,
-    getUser: (id: string) => {
-      const user = users.find((user) => user.id === id);
-      if (!user) {
-        throw new Error(notFoundMsg);
-      }
-      return user;
-    },
+    getUser,
     createUser: async (createUserDto: CreateUserDto) => {
       if (users.find((user) => user.login === createUserDto.login)) {
         throw new Error(userAlreadyExistMsg);
@@ -41,7 +42,7 @@ const usersDB = () => {
       return newUser;
     },
     updateUser: async (id: string, updateUserDto: UpdateUserDto) => {
-      if (!users.find((user) => user.id === id)) {
+      if (!getUser(id)) {
         throw new Error();
       }
       users = users.map((user) => {
@@ -54,17 +55,20 @@ const usersDB = () => {
         return user;
       });
       await writeJson(usersJsonPath, JSON.stringify(users));
-      const user = users.find((user) => user.id === id);
-      return user;
+      return getUser(id);
     },
     deleteUser: async (id: string) => {
-      const user = users.find((user) => user.id === id);
+      const user = getUser(id);
       if (!user) {
         throw new Error(notFoundMsg);
       }
       users = users.filter((user) => user.id !== id);
       await writeJson(usersJsonPath, JSON.stringify(users));
       return user;
+    },
+    cleaerUsers: async () => {
+      users = [];
+      await writeJson(usersJsonPath, JSON.stringify(users));
     },
   };
 };
