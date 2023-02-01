@@ -1,13 +1,11 @@
+import {
+  BadRequestException,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { resolve } from 'path';
 
-import {
-  notFoundMsg,
-  passwordsDontMatchMsg,
-  safeJsonParse,
-  userAlreadyExistMsg,
-  loadJson,
-  writeJson,
-} from 'src/utils';
+import { safeJsonParse, loadJson, writeJson } from 'src/utils';
 
 import { CreateUserDto, UpdateUserDto } from '../../users/dto';
 import { UsersJsonDB } from './contracts';
@@ -32,7 +30,7 @@ const usersDB = () => {
   const getUser = (id: string) => {
     const user = db.users.find((user) => user.id === id);
     if (!user) {
-      throw new Error(notFoundMsg);
+      throw new NotFoundException();
     }
     return user;
   };
@@ -42,7 +40,7 @@ const usersDB = () => {
     getUser,
     createUser: async (createUserDto: CreateUserDto) => {
       if (db.users.find((user) => user.login === createUserDto.login)) {
-        throw new Error(userAlreadyExistMsg);
+        throw new BadRequestException();
       }
       const newUser = createUser(createUserDto);
       db.users.push(newUser);
@@ -50,13 +48,11 @@ const usersDB = () => {
       return newUser;
     },
     updateUser: async (id: string, updateUserDto: UpdateUserDto) => {
-      if (!getUser(id)) {
-        throw new Error(notFoundMsg);
-      }
+      getUser(id);
       db.users = db.users.map((user) => {
         if (user.id === id) {
           if (user.password !== updateUserDto.oldPassword) {
-            throw new Error(passwordsDontMatchMsg);
+            throw new ForbiddenException();
           }
           return { ...user, password: updateUserDto.newPassword };
         }
@@ -67,9 +63,6 @@ const usersDB = () => {
     },
     deleteUser: async (id: string) => {
       const user = getUser(id);
-      if (!user) {
-        throw new Error(notFoundMsg);
-      }
       db.users = db.users.filter((user) => user.id !== id);
       await writeJson(usersJsonPath, JSON.stringify(db));
       return user;
