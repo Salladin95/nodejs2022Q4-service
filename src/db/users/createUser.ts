@@ -7,8 +7,8 @@ const createUser = ({ login, password }: CreateUserDto): User => ({
   login,
   password,
   version: 1,
-  createdAt: new Date().getTime(),
-  updatedAt: new Date().getTime(),
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
 });
 
 export default createUser;

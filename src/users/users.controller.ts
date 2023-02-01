@@ -14,9 +14,9 @@ import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
 import { ValidationPipe } from './validate.pipe';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @HttpCode(201)

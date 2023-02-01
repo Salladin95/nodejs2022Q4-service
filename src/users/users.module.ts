@@ -17,4 +17,4 @@ import { ValidationPipe } from './validate.pipe';
     },
   ],
 })
-export class UsersModule { }
+export class UsersModule {}
