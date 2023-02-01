@@ -1,28 +1,36 @@
 import { resolve } from 'path';
 
-import { User } from 'src/users/contracts';
-import { usersGurard } from 'src/users/contracts/userGuard';
 import {
   notFoundMsg,
   passwordsDontMatchMsg,
   safeJsonParse,
   userAlreadyExistMsg,
+  loadJson,
+  writeJson,
 } from 'src/utils';
-import { CreateUserDto, UpdateUserDto } from '../users/dto';
+
+import { CreateUserDto, UpdateUserDto } from '../../users/dto';
+import { UsersJsonDB } from './contracts';
 
 import createUser from './createUser';
-import loadJson from './loadJson';
-import writeJson from './writeJson';
+import isUsersDB from './dbTypeGuards';
 
 const usersDB = () => {
   const usersJsonPath = resolve(__dirname, 'db-users.json');
-  let users: User[] = [];
-  loadJson(usersJsonPath).then((unparsedUsers) => {
-    users = <User[]>safeJsonParse(usersGurard)(unparsedUsers);
-  });
+  let db: UsersJsonDB = { users: [] };
+
+  loadJson(usersJsonPath)
+    .then((unparsedUsersDB) => {
+      db = <UsersJsonDB>safeJsonParse(isUsersDB)(unparsedUsersDB);
+    })
+    .catch(() => {
+      (async () => {
+        await writeJson(usersJsonPath, JSON.stringify(db));
+      })();
+    });
 
   const getUser = (id: string) => {
-    const user = users.find((user) => user.id === id);
+    const user = db.users.find((user) => user.id === id);
     if (!user) {
       throw new Error(notFoundMsg);
     }
@@ -30,22 +38,22 @@ const usersDB = () => {
   };
 
   return {
-    getUsers: () => users,
+    getUsers: () => db,
     getUser,
     createUser: async (createUserDto: CreateUserDto) => {
-      if (users.find((user) => user.login === createUserDto.login)) {
+      if (db.users.find((user) => user.login === createUserDto.login)) {
         throw new Error(userAlreadyExistMsg);
       }
       const newUser = createUser(createUserDto);
-      users.push(newUser);
-      await writeJson(usersJsonPath, JSON.stringify(users));
+      db.users.push(newUser);
+      await writeJson(usersJsonPath, JSON.stringify(db));
       return newUser;
     },
     updateUser: async (id: string, updateUserDto: UpdateUserDto) => {
       if (!getUser(id)) {
-        throw new Error();
+        throw new Error(notFoundMsg);
       }
-      users = users.map((user) => {
+      db.users = db.users.map((user) => {
         if (user.id === id) {
           if (user.password !== updateUserDto.oldPassword) {
             throw new Error(passwordsDontMatchMsg);
@@ -54,7 +62,7 @@ const usersDB = () => {
         }
         return user;
       });
-      await writeJson(usersJsonPath, JSON.stringify(users));
+      await writeJson(usersJsonPath, JSON.stringify(db));
       return getUser(id);
     },
     deleteUser: async (id: string) => {
@@ -62,13 +70,13 @@ const usersDB = () => {
       if (!user) {
         throw new Error(notFoundMsg);
       }
-      users = users.filter((user) => user.id !== id);
-      await writeJson(usersJsonPath, JSON.stringify(users));
+      db.users = db.users.filter((user) => user.id !== id);
+      await writeJson(usersJsonPath, JSON.stringify(db));
       return user;
     },
     cleaerUsers: async () => {
-      users = [];
-      await writeJson(usersJsonPath, JSON.stringify(users));
+      db.users = [];
+      await writeJson(usersJsonPath, JSON.stringify(db));
     },
   };
 };

@@ -1,9 +1,13 @@
-import { UsersDB } from './usersDB';
+import { Injectable } from '@nestjs/common';
 
-const initializeDB = (usersDB: UsersDB) => {
-  const db = { usersDB };
-  db.usersDB.getUsers();
-  return db;
-};
+import usersDB, { UsersDB } from './users/usersDB';
 
-export default initializeDB;
+@Injectable()
+class DB {
+  usersDB: UsersDB;
+  constructor() {
+    this.usersDB = usersDB();
+  }
+}
+
+export default DB;
