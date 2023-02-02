@@ -5,11 +5,11 @@ export class UpdateUserDto {
   @MinLength(3, {
     message: 'Login is too short',
   })
-  oldPassword: string; // previous password
+  oldPassword: string;
 
   @IsString()
   @MinLength(3, {
     message: 'Login is too short',
   })
-  newPassword: string; // new password
+  newPassword: string;
 }
