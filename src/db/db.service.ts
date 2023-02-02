@@ -3,11 +3,11 @@ import { Injectable } from '@nestjs/common';
 import usersDB, { UsersDB } from './users/usersDB';
 
 @Injectable()
-class DB {
+class DBService {
   usersDB: UsersDB;
   constructor() {
     this.usersDB = usersDB();
   }
 }
 
-export default DB;
+export default DBService;
