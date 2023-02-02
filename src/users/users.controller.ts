@@ -16,7 +16,7 @@ import { ValidationPipe } from './validate.pipe';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   @HttpCode(201)

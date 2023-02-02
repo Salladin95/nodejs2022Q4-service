@@ -15,4 +15,4 @@ import DB from './db/db';
   controllers: [],
   providers: [DB],
 })
-export class AppModule { }
+export class AppModule {}
