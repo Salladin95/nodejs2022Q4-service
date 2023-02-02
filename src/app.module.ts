@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import configuration from './config';
 import DB from './db/db';
+import { ValidationPipe } from './users/validate.pipe';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -13,6 +15,12 @@ import DB from './db/db';
     UsersModule,
   ],
   controllers: [],
-  providers: [DB],
+  providers: [
+    DB,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}

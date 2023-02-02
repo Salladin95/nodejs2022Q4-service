@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { User } from 'src/users/contracts';
 
 import { CreateUserDto, UpdateUserDto } from '../../users/dto';
@@ -24,12 +20,12 @@ const usersDB = () => {
     getUsers: () => users,
     getUser,
     createUser: async (createUserDto: CreateUserDto) => {
-      if (users.find((user) => user.login === createUserDto.login)) {
-        throw new BadRequestException();
-      }
       const newUser = createUser(createUserDto);
       users.push(newUser);
-      return newUser;
+
+      const user = { ...newUser };
+      delete user.password;
+      return user;
     },
     updateUser: async (id: string, updateUserDto: UpdateUserDto) => {
       getUser(id);
@@ -42,12 +38,14 @@ const usersDB = () => {
             ...user,
             password: updateUserDto.newPassword,
             updatedAt: Date.now(),
-            version: user.version++,
+            version: ++user.version,
           };
         }
         return user;
       });
-      return getUser(id);
+      const user = getUser(id);
+      delete user.password;
+      return user;
     },
     deleteUser: async (id: string) => {
       const user = getUser(id);
