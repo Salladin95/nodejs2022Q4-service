@@ -6,13 +6,13 @@ import omitKeyFromObj from 'src/utils/omitKeyFromObj';
 
 import { User } from './contracts';
 
-export interface Response {
-  data: User | User[];
+export interface Response<T> {
+  data: T | T[];
 }
 
 @Injectable()
-export class TransformInterceptor implements NestInterceptor<Response> {
-  intercept(_, next: CallHandler): Observable<Response> {
+export class TransformInterceptor<T> implements NestInterceptor<Response<T>> {
+  intercept(_, next: CallHandler): Observable<Response<User>> {
     return next.handle().pipe(
       map((data) => {
         if (isArray(data)) {

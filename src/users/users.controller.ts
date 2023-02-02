@@ -9,21 +9,23 @@ import {
   ParseUUIDPipe,
   Put,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
-import { ValidationPipe } from './validate.pipe';
 import { TransformInterceptor } from './transform.interceptor';
 
 @UseInterceptors(new TransformInterceptor())
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   @HttpCode(201)
-  create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+  @UsePipes(ValidationPipe)
+  create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
@@ -38,9 +40,10 @@ export class UsersController {
   }
 
   @Put(':id')
+  @UsePipes(ValidationPipe)
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.usersService.update(id, updateUserDto);
   }
