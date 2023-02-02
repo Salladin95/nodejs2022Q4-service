@@ -23,9 +23,7 @@ const usersDB = () => {
       const newUser = createUser(createUserDto);
       users.push(newUser);
 
-      const user = { ...newUser };
-      delete user.password;
-      return user;
+      return newUser;
     },
     updateUser: async (id: string, updateUserDto: UpdateUserDto) => {
       getUser(id);
@@ -43,9 +41,7 @@ const usersDB = () => {
         }
         return user;
       });
-      const user = getUser(id);
-      delete user.password;
-      return user;
+      return getUser(id);
     },
     deleteUser: async (id: string) => {
       const user = getUser(id);
