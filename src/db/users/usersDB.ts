@@ -48,12 +48,12 @@ const usersDB = () => {
       users = users.filter((user) => user.id !== id);
       return user;
     },
-    cleaerUsers: async () => {
+    clearUsers: async () => {
       users = [];
     },
   };
 };
 
-export type UsersDB = ReturnType<typeof usersDB>;
+type UsersDB = ReturnType<typeof usersDB>;
 
-export default usersDB;
+export { usersDB, UsersDB };
