@@ -1,6 +1,7 @@
 const omitKeyFromObj = (key: string, obj: Record<string, unknown>) => {
-  const { [key]: _, ...rest } = obj;
-  return rest;
+  const newObj = { ...obj };
+  delete newObj[key];
+  return newObj;
 };
 
 export default omitKeyFromObj;
