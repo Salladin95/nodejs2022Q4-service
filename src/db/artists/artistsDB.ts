@@ -48,6 +48,13 @@ const artistsDB = (dbService: DBService) => {
         }
       });
 
+      const albums = dbService.albumsDB.getAlbums();
+      albums.forEach((album) => {
+        if (album.artistId === id) {
+          dbService.tracksDB.updateTrack(album.id, { artistId: null });
+        }
+      });
+
       artists = artists.filter((artist) => artist.id !== id);
       return artist;
     },
