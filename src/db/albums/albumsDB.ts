@@ -8,7 +8,7 @@ import createAlbum from './createAlbum';
 const albumsDB = (dbService: DBService) => {
   let albums: Album[] = [];
 
-  const getAlbum = (id: string) => {
+  const getOne = (id: string) => {
     const album = albums.find((album) => album.id === id);
     if (!album) {
       throw new NotFoundException();
@@ -18,19 +18,19 @@ const albumsDB = (dbService: DBService) => {
 
   return {
     getAlbums: () => albums,
-    getAlbum,
-    createAlbum: async (createAlbumDto: CreateAlbumDto) => {
+    getOne,
+    createAlbum: (createAlbumDto: CreateAlbumDto) => {
       if (createAlbumDto.artistId) {
-        dbService.artistsDB.getArtist(createAlbumDto.artistId);
+        dbService.artists.getOne(createAlbumDto.artistId);
       }
       const newAlbum = createAlbum(createAlbumDto);
       albums.push(newAlbum);
       return newAlbum;
     },
-    updateAlbum: async (id: string, updateAlbumDto: UpdateAlbumDto) => {
-      getAlbum(id);
+    updateAlbum: (id: string, updateAlbumDto: UpdateAlbumDto) => {
+      getOne(id);
       if (updateAlbumDto.artistId) {
-        dbService.artistsDB.getArtist(updateAlbumDto.artistId);
+        dbService.artists.getOne(updateAlbumDto.artistId);
       }
       albums = albums.map((album) => {
         if (album.id === id) {
@@ -41,22 +41,26 @@ const albumsDB = (dbService: DBService) => {
         }
         return album;
       });
-      return getAlbum(id);
+      return getOne(id);
     },
-    deleteAlbum: async (id: string) => {
-      const album = getAlbum(id);
+    deleteAlbum: (id: string) => {
+      const album = getOne(id);
 
-      const tracks = dbService.tracksDB.getTracks();
+      const tracks = dbService.tracks.getTracks();
       tracks.forEach((track) => {
         if (track.albumId === id) {
-          dbService.tracksDB.updateTrack(track.id, { albumId: null });
+          dbService.tracks.updateTrack(track.id, { albumId: null });
         }
       });
+
+      if (dbService.favs.getFavsIDS().albums.includes(id)) {
+        dbService.favs.deleteFavItem(id, 'albums');
+      }
 
       albums = albums.filter((album) => album.id !== id);
       return album;
     },
-    clearTracks: async () => {
+    clearTracks: () => {
       albums = [];
     },
   };

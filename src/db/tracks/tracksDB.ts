@@ -7,7 +7,7 @@ import createTrack from './createTrack';
 const tracksDB = (dbService: DBService) => {
   let tracks: Track[] = [];
 
-  const getTrack = (id: string) => {
+  const getOne = (id: string) => {
     const track = tracks.find((track) => track.id === id);
     if (!track) {
       throw new NotFoundException();
@@ -17,19 +17,19 @@ const tracksDB = (dbService: DBService) => {
 
   return {
     getTracks: () => tracks,
-    getTrack,
-    createTrack: async (createTrackDto: CreateTrackDto) => {
+    getOne,
+    createTrack: (createTrackDto: CreateTrackDto) => {
       if (createTrackDto.artistId) {
-        dbService.artistsDB.getArtist(createTrackDto.artistId);
+        dbService.artists.getOne(createTrackDto.artistId);
       }
       const newTrack = createTrack(createTrackDto);
       tracks.push(newTrack);
       return newTrack;
     },
-    updateTrack: async (id: string, updateTrackDto: UpdateTrackDto) => {
-      getTrack(id);
+    updateTrack: (id: string, updateTrackDto: UpdateTrackDto) => {
+      getOne(id);
       if (updateTrackDto.artistId) {
-        dbService.artistsDB.getArtist(updateTrackDto.artistId);
+        dbService.artists.getOne(updateTrackDto.artistId);
       }
       tracks = tracks.map((track) => {
         if (track.id === id) {
@@ -40,14 +40,19 @@ const tracksDB = (dbService: DBService) => {
         }
         return track;
       });
-      return getTrack(id);
+      return getOne(id);
     },
-    deleteTrack: async (id: string) => {
-      const track = getTrack(id);
+    deleteTrack: (id: string) => {
+      const track = getOne(id);
+
+      if (dbService.favs.getFavsIDS().tracks.includes(id)) {
+        dbService.favs.deleteFavItem(id, 'tracks');
+      }
+
       tracks = tracks.filter((track) => track.id !== id);
       return track;
     },
-    clearTracks: async () => {
+    clearTracks: () => {
       tracks = [];
     },
   };

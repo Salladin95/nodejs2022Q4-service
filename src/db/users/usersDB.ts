@@ -8,7 +8,7 @@ import createUser from './createUser';
 const usersDB = () => {
   let users: User[] = [];
 
-  const getUser = (id: string) => {
+  const getOne = (id: string) => {
     const user = users.find((user) => user.id === id);
     if (!user) {
       throw new NotFoundException();
@@ -18,15 +18,15 @@ const usersDB = () => {
 
   return {
     getUsers: () => users,
-    getUser,
-    createUser: async (createUserDto: CreateUserDto) => {
+    getOne,
+    createUser: (createUserDto: CreateUserDto) => {
       const newUser = createUser(createUserDto);
       users.push(newUser);
 
       return newUser;
     },
-    updateUser: async (id: string, updateUserDto: UpdateUserDto) => {
-      getUser(id);
+    updateUser: (id: string, updateUserDto: UpdateUserDto) => {
+      getOne(id);
       users = users.map((user) => {
         if (user.id === id) {
           if (user.password !== updateUserDto.oldPassword) {
@@ -41,14 +41,14 @@ const usersDB = () => {
         }
         return user;
       });
-      return getUser(id);
+      return getOne(id);
     },
-    deleteUser: async (id: string) => {
-      const user = getUser(id);
+    deleteUser: (id: string) => {
+      const user = getOne(id);
       users = users.filter((user) => user.id !== id);
       return user;
     },
-    clearUsers: async () => {
+    clearUsers: () => {
       users = [];
     },
   };

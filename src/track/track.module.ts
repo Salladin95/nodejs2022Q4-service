@@ -8,4 +8,4 @@ import DBModule from 'src/db/db.module';
   providers: [TrackService],
   imports: [DBModule],
 })
-export class TrackModule { }
+export class TrackModule {}

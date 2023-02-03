@@ -8,22 +8,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private readonly db: DBService) {}
   create(createUserDto: CreateUserDto) {
-    return this.db.usersDB.createUser(createUserDto);
+    return this.db.users.createUser(createUserDto);
   }
 
   findAll() {
-    return this.db.usersDB.getUsers();
+    return this.db.users.getUsers();
   }
 
   findOne(id: string) {
-    return this.db.usersDB.getUser(id);
+    return this.db.users.getOne(id);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.db.usersDB.updateUser(id, updateUserDto);
+    return this.db.users.updateUser(id, updateUserDto);
   }
 
   remove(id: string) {
-    return this.db.usersDB.deleteUser(id);
+    return this.db.users.deleteUser(id);
   }
 }

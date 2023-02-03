@@ -5,24 +5,24 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly db: DBService) { }
+  constructor(private readonly db: DBService) {}
   create(createArtistDto: CreateArtistDto) {
-    return this.db.artistsDB.createArtist(createArtistDto);
+    return this.db.artists.createArtist(createArtistDto);
   }
 
   findAll() {
-    return this.db.artistsDB.getArtists();
+    return this.db.artists.getArtists();
   }
 
   findOne(id: string) {
-    return this.db.artistsDB.getArtist(id);
+    return this.db.artists.getOne(id);
   }
 
   update(id: string, updateArtistDto: UpdateArtistDto) {
-    return this.db.artistsDB.updateArtist(id, updateArtistDto);
+    return this.db.artists.updateArtist(id, updateArtistDto);
   }
 
   remove(id: string) {
-    return this.db.artistsDB.deleteArtist(id);
+    return this.db.artists.deleteArtist(id);
   }
 }

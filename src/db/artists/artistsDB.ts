@@ -9,7 +9,7 @@ import createArtist from './createArtist';
 const artistsDB = (dbService: DBService) => {
   let artists: Artist[] = [];
 
-  const getArtist = (id: string) => {
+  const getOne = (id: string) => {
     const artist = artists.find((artist) => artist.id === id);
     if (!artist) {
       throw new NotFoundException();
@@ -19,14 +19,14 @@ const artistsDB = (dbService: DBService) => {
 
   return {
     getArtists: () => artists,
-    getArtist,
-    createArtist: async (createArtistDto: CreateArtistDto) => {
+    getOne,
+    createArtist: (createArtistDto: CreateArtistDto) => {
       const newArtist = createArtist(createArtistDto);
       artists.push(newArtist);
       return newArtist;
     },
-    updateArtist: async (id: string, updateArtistDto: UpdateArtistDto) => {
-      getArtist(id);
+    updateArtist: (id: string, updateArtistDto: UpdateArtistDto) => {
+      getOne(id);
       artists = artists.map((artist) => {
         if (artist.id === id) {
           return {
@@ -36,29 +36,33 @@ const artistsDB = (dbService: DBService) => {
         }
         return artist;
       });
-      return getArtist(id);
+      return getOne(id);
     },
-    deleteArtist: async (id: string) => {
-      const artist = getArtist(id);
+    deleteArtist: (id: string) => {
+      const artist = getOne(id);
 
-      const tracks = dbService.tracksDB.getTracks();
+      if (dbService.favs.getFavsIDS().artists.includes(id)) {
+        dbService.favs.deleteFavItem(id, 'artists');
+      }
+
+      const tracks = dbService.tracks.getTracks();
       tracks.forEach((track) => {
         if (track.artistId === id) {
-          dbService.tracksDB.updateTrack(track.id, { artistId: null });
+          dbService.tracks.updateTrack(track.id, { artistId: null });
         }
       });
 
-      const albums = dbService.albumsDB.getAlbums();
+      const albums = dbService.albums.getAlbums();
       albums.forEach((album) => {
         if (album.artistId === id) {
-          dbService.tracksDB.updateTrack(album.id, { artistId: null });
+          dbService.albums.updateAlbum(album.id, { artistId: null });
         }
       });
 
       artists = artists.filter((artist) => artist.id !== id);
       return artist;
     },
-    clearArtists: async () => {
+    clearArtists: () => {
       artists = [];
     },
   };

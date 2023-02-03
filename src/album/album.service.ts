@@ -5,24 +5,24 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 
 @Injectable()
 export class AlbumService {
-  constructor(private readonly db: DBService) { }
+  constructor(private readonly db: DBService) {}
   create(createAlbumDto: CreateAlbumDto) {
-    return this.db.albumsDB.createAlbum(createAlbumDto);
+    return this.db.albums.createAlbum(createAlbumDto);
   }
 
   findAll() {
-    return this.db.albumsDB.getAlbums();
+    return this.db.albums.getAlbums();
   }
 
   findOne(id: string) {
-    return this.db.albumsDB.getAlbum(id);
+    return this.db.albums.getOne(id);
   }
 
   update(id: string, updateAlbumDto: UpdateAlbumDto) {
-    return this.db.albumsDB.updateAlbum(id, updateAlbumDto);
+    return this.db.albums.updateAlbum(id, updateAlbumDto);
   }
 
   remove(id: string) {
-    return this.db.albumsDB.deleteAlbum(id);
+    return this.db.albums.deleteAlbum(id);
   }
 }

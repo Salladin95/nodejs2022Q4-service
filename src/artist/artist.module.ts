@@ -9,4 +9,4 @@ import DBModule from 'src/db/db.module';
   providers: [ArtistService],
   imports: [DBModule],
 })
-export class ArtistModule { }
+export class ArtistModule {}

@@ -20,7 +20,7 @@ import { TransformInterceptor } from './transform.interceptor';
 @UseInterceptors(new TransformInterceptor())
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @HttpCode(201)

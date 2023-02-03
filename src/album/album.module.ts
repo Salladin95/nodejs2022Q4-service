@@ -8,4 +8,4 @@ import DBModule from 'src/db/db.module';
   providers: [AlbumService],
   imports: [DBModule],
 })
-export class AlbumModule { }
+export class AlbumModule {}

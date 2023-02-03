@@ -19,7 +19,7 @@
     "test:artists": "jest  ./test/artists.*.ts",
     "test:tracks": "jest  ./test/tracks.*.ts",
     "test:albums": "jest  ./test/albums.*.ts",
-    "test:favs": "jest  ./test/favs.*.ts",
+    "test:favs": "jest  ./test/favorites.*.ts",
     "test:auth": "cross-env TEST_MODE=auth jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
