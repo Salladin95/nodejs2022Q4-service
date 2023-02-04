@@ -24,7 +24,7 @@ npm start
 ```
 
 After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+in your browser OpenAPI documentation by typing http://localhost:4000/swagger/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
@@ -40,7 +40,11 @@ npm run test
 To run only one of all test suites
 
 ```
-npm run test -- <path to suite>
+npm run test:users
+npm run test:artists
+npm run test:tracks
+npm run test:albums
+npm run test:favs
 ```
 
 To run all test with authorization
