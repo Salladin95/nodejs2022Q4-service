@@ -11,16 +11,16 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
-import { TransformInterceptor } from './transform.interceptor';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './contracts';
 
 @ApiTags('user')
-@UseInterceptors(new TransformInterceptor())
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -35,7 +35,7 @@ export class UsersController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return new User(this.usersService.create(createUserDto));
   }
 
   @Get()
@@ -44,7 +44,7 @@ export class UsersController {
     type: [User],
   })
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAll().map((user) => new User(user));
   }
 
   @Get(':id')
@@ -61,7 +61,7 @@ export class UsersController {
     description: 'Not found',
   })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.usersService.findOne(id);
+    return new User(this.usersService.findOne(id));
   }
 
   @Put(':id')
@@ -86,7 +86,7 @@ export class UsersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    return new User(this.usersService.update(id, updateUserDto));
   }
 
   @Delete(':id')
