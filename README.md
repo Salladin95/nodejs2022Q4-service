@@ -11,6 +11,12 @@
 git clone {repository URL}
 ```
 
+## Switching branch
+
+```
+git checkout develop
+```
+
 ## Installing NPM modules
 
 ```
@@ -47,16 +53,6 @@ npm run test:albums
 npm run test:favs
 ```
 
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
 ```
 
 ### Auto-fix and format
@@ -68,9 +64,3 @@ npm run lint
 ```
 npm run format
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
