@@ -21,7 +21,7 @@ import { Track } from './contracts';
 @Controller('track')
 @UsePipes(ValidationPipe)
 export class TrackController {
-  constructor(private readonly trackService: TrackService) { }
+  constructor(private readonly trackService: TrackService) {}
 
   @Post()
   @ApiBody({ type: CreateTrackDto })

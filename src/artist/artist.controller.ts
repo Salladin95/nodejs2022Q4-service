@@ -21,7 +21,7 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 @ApiTags('artist')
 @Controller('artist')
 export class ArtistController {
-  constructor(private readonly artistService: ArtistService) { }
+  constructor(private readonly artistService: ArtistService) {}
 
   @Post()
   @UsePipes(ValidationPipe)

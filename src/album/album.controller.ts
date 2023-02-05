@@ -21,7 +21,7 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 @Controller('album')
 @UsePipes(ValidationPipe)
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) { }
+  constructor(private readonly albumService: AlbumService) {}
 
   @Post()
   @HttpCode(201)
