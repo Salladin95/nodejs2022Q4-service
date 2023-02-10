@@ -1,20 +1,21 @@
 # stage 1 building
 FROM node:18.14.0-alpine as builder
-WORKDIR /user/app
+WORKDIR /usr/src/app
 COPY package*.json .
-RUN yarn install
+RUN npm i
 COPY . .
-RUN yarn run build
+# RUN npm run build
 
 # stage 2 building
-FROM node:18.14.0-alpine
-WORKDIR /user/app
-COPY package*.json .
-RUN yarn install --production
+# FROM node:18.14.0-alpine
+# WORKDIR /usr/src/app
+# COPY package*.json .
+#
+# RUN npm install --omit=dev
+#
+# COPY --from=builder /user/app/dist ./dist
+# COPY .env .
 
-COPY --from=builder /user/app/dist ./dist
-COPY .env .
-
-EXPOSE 3000
-CMD node dist/main
+EXPOSE ${PORT}
+# CMD node dist/main
 

@@ -17,9 +17,10 @@ services:
     networks:
       - net
     volumes:
-      - .:/user/app
-      - /user/app/node_modules
-    # command:
+      - ./src:/usr/src/app/src
+      - /usr/src/app/node_modules
+    command: npm run start:dev
+    # command: nodemon
 
   db:
     build: ./database/
@@ -31,19 +32,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - net
-
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    depends_on:
-      - db
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - '5050:80'
     networks:
       - net
 

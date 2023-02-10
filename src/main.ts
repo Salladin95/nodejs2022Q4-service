@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { ConfigEnum, ManualConfigOptions } from './config';
+import { ConfigEnum, ManualConfigOptions } from './configs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(manualConfig.port);
+  console.log('here we are again');
 }
 
 bootstrap();

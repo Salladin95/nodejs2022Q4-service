@@ -47,6 +47,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "nodemon": "^2.0.20",
     "@nestjs/cli": "^9.2.0",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "^9.3.2",

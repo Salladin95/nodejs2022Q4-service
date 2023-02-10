@@ -1,8 +1,9 @@
 import { registerAs } from '@nestjs/config';
+import { DataSourceOptions } from 'typeorm';
 
 const CONNECTION_TYPE = 'postgres';
 
-export default registerAs('typeorm', () => {
+export default registerAs('ormconfig ', (): DataSourceOptions => {
   return {
     type: CONNECTION_TYPE,
     port: parseInt(process.env.POSTGRES_PORT, 10) || 5432,
@@ -12,6 +13,8 @@ export default registerAs('typeorm', () => {
     database: process.env.POSTGRES_DB,
     synchronize: process.env.NODE_ENV !== 'prod',
     logging: true,
-    entities: [],
+    entities: ['dist/**/entities/*.entity.js'],
+    migrations: ['dist/**/migrations/*.js'],
+    migrationsRun: true,
   };
 });
