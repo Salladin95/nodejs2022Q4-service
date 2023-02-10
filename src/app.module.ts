@@ -1,17 +1,25 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { UsersModule } from './users/users.module';
 import { ArtistModule } from './artist/artist.module';
 import { TrackModule } from './track/track.module';
 import { AlbumModule } from './album/album.module';
 import { FavsModule } from './favs/favs.module';
-import configuration from './config';
+import { ConfigEnum, dbConfig, manualConfig } from './config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [configuration],
+      load: [dbConfig, manualConfig],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        ...configService.get<TypeOrmModuleOptions>(ConfigEnum.TYPEORM),
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
     ArtistModule,
@@ -20,4 +28,4 @@ import configuration from './config';
     FavsModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
