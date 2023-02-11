@@ -23,7 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(manualConfig.port);
-  console.log('here we are again!!!');
+  console.log(`Server is running on port: ${manualConfig.port}`);
 }
 
 bootstrap();
