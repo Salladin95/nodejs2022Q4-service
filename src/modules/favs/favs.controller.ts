@@ -8,16 +8,17 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Album } from 'src/album/contracts';
-import { Artist } from 'src/artist/contracts';
-import { Track } from 'src/track/contracts';
+
+import { AlbumEntity } from '../../modules/album/entities/album.entity';
+import { ArtistEntity } from '../../modules/artist/entities/artist.entity';
+import { Track } from '../../modules/track/contracts';
 import { FavsResponse } from './contracts';
 import { FavsService } from './favs.service';
 
 @ApiTags('favs')
 @Controller('favs')
 export class FavsController {
-  constructor(private readonly favsService: FavsService) {}
+  constructor(private readonly favsService: FavsService) { }
 
   @Get()
   @ApiResponse({
@@ -67,7 +68,7 @@ export class FavsController {
   @HttpCode(201)
   @ApiResponse({
     status: 201,
-    type: Album,
+    type: AlbumEntity,
   })
   @ApiResponse({
     status: 400,
@@ -102,7 +103,7 @@ export class FavsController {
   @HttpCode(201)
   @ApiResponse({
     status: 201,
-    type: Artist,
+    type: ArtistEntity,
   })
   @ApiResponse({
     status: 400,

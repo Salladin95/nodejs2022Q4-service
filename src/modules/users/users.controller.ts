@@ -8,10 +8,8 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Put,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
-  ClassSerializerInterceptor,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';

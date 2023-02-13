@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 
-import { Track } from 'src/track/contracts';
-import { CreateTrackDto } from 'src/track/dto';
+import { Track } from '../../modules/track/contracts';
+import { CreateTrackDto } from '../../modules/track/dto';
 
 const createTrack = ({
   name,

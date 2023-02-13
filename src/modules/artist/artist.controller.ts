@@ -5,49 +5,44 @@ import {
   Body,
   Param,
   Delete,
-  UsePipes,
-  ValidationPipe,
-  HttpCode,
   ParseUUIDPipe,
   Put,
+  ValidationPipe,
+  UsePipes,
+  HttpCode,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AlbumService } from './album.service';
-import { Album } from './contracts';
-import { CreateAlbumDto } from './dto/create-album.dto';
-import { UpdateAlbumDto } from './dto/update-album.dto';
 
-@ApiTags('album')
-@Controller('album')
-@UsePipes(ValidationPipe)
-export class AlbumController {
-  constructor(private readonly albumService: AlbumService) {}
+import { ArtistService } from './artist.service';
+import { ArtistEntity } from './entities/artist.entity';
+import { CreateArtistDto } from './dto/create-artist.dto';
+import { UpdateArtistDto } from './dto/update-artist.dto';
+
+@ApiTags('artist')
+@Controller('artist')
+export class ArtistController {
+  constructor(private readonly artistService: ArtistService) { }
 
   @Post()
+  @UsePipes(ValidationPipe)
   @HttpCode(201)
-  @ApiBody({ type: CreateAlbumDto })
-  @ApiResponse({
-    status: 201,
-    type: Album,
-  })
+  @ApiBody({ type: CreateArtistDto })
+  @ApiResponse({ status: 201, type: ArtistEntity })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  create(@Body(ValidationPipe) createAlbumDto: CreateAlbumDto) {
-    return this.albumService.create(createAlbumDto);
+  create(@Body(ValidationPipe) createArtistDto: CreateArtistDto) {
+    return this.artistService.create(createArtistDto);
   }
 
   @Get()
-  @ApiResponse({
-    status: 200,
-    type: [Album],
-  })
+  @ApiResponse({ status: 200, type: [ArtistEntity] })
   findAll() {
-    return this.albumService.findAll();
+    return this.artistService.findAll();
   }
 
   @Get(':id')
   @ApiResponse({
     status: 200,
-    type: Album,
+    type: ArtistEntity,
   })
   @ApiResponse({
     status: 400,
@@ -58,14 +53,14 @@ export class AlbumController {
     description: 'Not found',
   })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.albumService.findOne(id);
+    return this.artistService.findOne(id);
   }
 
   @Put(':id')
-  @ApiBody({ type: UpdateAlbumDto })
+  @ApiBody({ type: UpdateArtistDto })
   @ApiResponse({
     status: 200,
-    type: Album,
+    type: ArtistEntity,
   })
   @ApiResponse({
     status: 400,
@@ -75,11 +70,12 @@ export class AlbumController {
     status: 404,
     description: 'Not found',
   })
+  @UsePipes(ValidationPipe)
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body(ValidationPipe) updateAlbumDto: UpdateAlbumDto,
+    @Body(ValidationPipe) updateArtistDto: UpdateArtistDto,
   ) {
-    return this.albumService.update(id, updateAlbumDto);
+    return this.artistService.update(id, updateArtistDto);
   }
 
   @Delete(':id')
@@ -96,6 +92,6 @@ export class AlbumController {
     description: 'Not found',
   })
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.albumService.remove(id);
+    return this.artistService.remove(id);
   }
 }

@@ -21,12 +21,8 @@ const favsDB = (dbService: DBService) => {
   return {
     getFavsIDS: () => favs,
     getFavs: () => ({
-      artists: dbService.artists
-        .getArtists()
-        .filter((artist) => favs.artists.includes(artist.id)),
-      albums: dbService.albums
-        .getAlbums()
-        .filter((album) => favs.albums.includes(album.id)),
+      artists: [],
+      albums: [],
       tracks: dbService.tracks
         .getTracks()
         .filter((track) => favs.tracks.includes(track.id)),

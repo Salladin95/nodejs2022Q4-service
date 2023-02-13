@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
-import { Track } from 'src/track/contracts';
-import { CreateTrackDto, UpdateTrackDto } from 'src/track/dto';
+import { Track } from '../../modules/track/contracts';
+import { CreateTrackDto, UpdateTrackDto } from '../../modules/track/dto';
 import DBService from '../db.service';
 import createTrack from './createTrack';
 
@@ -19,18 +19,12 @@ const tracksDB = (dbService: DBService) => {
     getTracks: () => tracks,
     getOne,
     createTrack: (createTrackDto: CreateTrackDto) => {
-      if (createTrackDto.artistId) {
-        dbService.artists.getOne(createTrackDto.artistId);
-      }
       const newTrack = createTrack(createTrackDto);
       tracks.push(newTrack);
       return newTrack;
     },
     updateTrack: (id: string, updateTrackDto: UpdateTrackDto) => {
       getOne(id);
-      if (updateTrackDto.artistId) {
-        dbService.artists.getOne(updateTrackDto.artistId);
-      }
       tracks = tracks.map((track) => {
         if (track.id === id) {
           return {

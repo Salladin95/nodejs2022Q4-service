@@ -19,8 +19,9 @@ services:
     volumes:
       - ./src:/usr/src/app/src
       - /usr/src/app/node_modules
+    command: npm run init-migration
+    command: npm run migration:run
     command: npm run start:dev
-    # command: nodemon
 
   db:
     build: ./database/
