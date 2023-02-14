@@ -15,7 +15,7 @@
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "npx typeorm migration:run -d dist/configs/data-source.js",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "init-migration": "cross-env OUT_OF_DOCKER_ENV=true npm run migration:generate -- -o ./dist/migrations/InitMigration",
+    "init-migration": "npm run migration:generate -- -o ./dist/migrations/InitMigration",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

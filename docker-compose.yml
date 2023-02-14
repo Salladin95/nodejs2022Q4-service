@@ -2,7 +2,8 @@
 version: '3.8'
 
 services:
-  node:
+  app:
+    container_name: home-service-app
     build: .
     ports:
       - ${PORT}:${PORT}
@@ -19,11 +20,10 @@ services:
     volumes:
       - ./src:/usr/src/app/src
       - /usr/src/app/node_modules
-    command: npm run init-migration
-    command: npm run migration:run
     command: npm run start:dev
 
   db:
+    container_name: home-service-db
     build: ./database/
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}

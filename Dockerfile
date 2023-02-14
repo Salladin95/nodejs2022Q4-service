@@ -7,4 +7,4 @@ COPY . .
 
 EXPOSE ${PORT}
 
-# CMD ["npm", "run init:migration"]
+CMD ["npm", "run", "init:migration"]
