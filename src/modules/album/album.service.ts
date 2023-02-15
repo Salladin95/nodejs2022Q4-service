@@ -1,14 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { PrismaService } from 'src/prisma.service';
 
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { AlbumEntity } from './entities/album.entity';
 
 @Injectable()
 export class AlbumService {
-
+  // constructor(private prisma: PrismaService) { }
   async create(createAlbumDto: CreateAlbumDto) {
     // const album = this.albumRepostitory.create(createAlbumDto);
     // await this.albumRepostitory.save(album);
