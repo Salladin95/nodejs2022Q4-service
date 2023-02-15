@@ -20,12 +20,17 @@ export class AlbumService {
   }
 
   async findAll() {
-    const albums = await this.albumRepostitory.find();
+    const albums = await this.albumRepostitory.find({
+      relations: { artist: true },
+    });
     return albums;
   }
 
   async findOne(id: string) {
-    const album = await this.albumRepostitory.findOne({ where: { id } });
+    const album = await this.albumRepostitory.findOne({
+      where: { id },
+      relations: { artist: true },
+    });
     if (!album) {
       throw new NotFoundException();
     }
@@ -33,9 +38,9 @@ export class AlbumService {
   }
 
   async update(id: string, updateAlbumDto: UpdateAlbumDto) {
-    await this.findOne(id);
-    const updatedAlbum = this.albumRepostitory.update(id, updateAlbumDto);
-    return updatedAlbum;
+    const one = await this.findOne(id);
+    this.albumRepostitory.update(id, updateAlbumDto);
+    return { ...one, ...updateAlbumDto };
   }
 
   async remove(id: string) {

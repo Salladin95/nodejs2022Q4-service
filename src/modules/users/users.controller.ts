@@ -15,7 +15,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserEntity } from './entities/user.entity';
+import { User } from './contracts/user.interface';
 
 @ApiTags('user')
 @Controller('user')
@@ -28,7 +28,7 @@ export class UsersController {
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
     status: 201,
-    type: UserEntity,
+    type: User,
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body() createUserDto: CreateUserDto) {
@@ -38,7 +38,7 @@ export class UsersController {
   @Get()
   @ApiResponse({
     status: 200,
-    type: [UserEntity],
+    type: [User],
   })
   findAll() {
     return this.usersService.findAll();
@@ -47,7 +47,7 @@ export class UsersController {
   @Get(':id')
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: User,
   })
   @ApiResponse({
     status: 400,
@@ -64,7 +64,7 @@ export class UsersController {
   @Put(':id')
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: User,
   })
   @ApiResponse({
     status: 400,

@@ -14,7 +14,7 @@ import {
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { AlbumService } from './album.service';
-import { AlbumEntity } from './entities/album.entity';
+import { Album } from './contracts/album.interface';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 
@@ -29,7 +29,7 @@ export class AlbumController {
   @ApiBody({ type: CreateAlbumDto })
   @ApiResponse({
     status: 201,
-    type: AlbumEntity,
+    type: Album,
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body(ValidationPipe) createAlbumDto: CreateAlbumDto) {
@@ -39,7 +39,7 @@ export class AlbumController {
   @Get()
   @ApiResponse({
     status: 200,
-    type: [AlbumEntity],
+    type: [Album],
   })
   findAll() {
     return this.albumService.findAll();
@@ -48,7 +48,7 @@ export class AlbumController {
   @Get(':id')
   @ApiResponse({
     status: 200,
-    type: AlbumEntity,
+    type: Album,
   })
   @ApiResponse({
     status: 400,
@@ -66,7 +66,7 @@ export class AlbumController {
   @ApiBody({ type: UpdateAlbumDto })
   @ApiResponse({
     status: 200,
-    type: AlbumEntity,
+    type: Album,
   })
   @ApiResponse({
     status: 400,
