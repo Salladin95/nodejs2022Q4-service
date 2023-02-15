@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { AlbumEntity } from '../../modules/album/entities/album.entity';
-import { ArtistEntity } from '../../modules/artist/entities/artist.entity';
+import { Album } from '../../modules/album/contracts/album.interface';
+import { Artist } from '../../modules/artist/contracts/artist.interface';
 import { Track } from '../../modules/track/contracts';
 import { FavsResponse } from './contracts';
 import { FavsService } from './favs.service';
@@ -68,7 +68,7 @@ export class FavsController {
   @HttpCode(201)
   @ApiResponse({
     status: 201,
-    type: AlbumEntity,
+    type: Album,
   })
   @ApiResponse({
     status: 400,
@@ -103,7 +103,7 @@ export class FavsController {
   @HttpCode(201)
   @ApiResponse({
     status: 201,
-    type: ArtistEntity,
+    type: Artist,
   })
   @ApiResponse({
     status: 400,

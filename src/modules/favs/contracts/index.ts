@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AlbumEntity } from '../../album/entities/album.entity';
-import { ArtistEntity } from '../../artist/entities/artist.entity';
+import { Album } from '../../album/contracts/album.interface';
+import { Artist } from '../../artist/contracts/artist.interface';
 import { Track } from '../../track/contracts';
 
 interface Favorites {
@@ -19,7 +19,7 @@ class FavsResponse {
       },
     ],
   })
-  artists: ArtistEntity[];
+  artists: Artist[];
 
   @ApiProperty({
     example: [
@@ -31,7 +31,7 @@ class FavsResponse {
       },
     ],
   })
-  albums: AlbumEntity[];
+  albums: Album[];
 
   @ApiProperty({
     example: [

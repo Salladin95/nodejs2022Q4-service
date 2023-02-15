@@ -4,9 +4,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './modules/app.module';
 import { ConfigEnum, ManualConfigOptions } from './configs';
+import { PrismaService } from './prisma/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
 
   const configService = app.get(ConfigService);
   const manualConfig = configService.get<ManualConfigOptions>(

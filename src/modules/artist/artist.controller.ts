@@ -14,7 +14,7 @@ import {
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ArtistService } from './artist.service';
-import { ArtistEntity } from './entities/artist.entity';
+import { Artist } from './contracts/artist.interface';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 
@@ -27,14 +27,14 @@ export class ArtistController {
   @UsePipes(ValidationPipe)
   @HttpCode(201)
   @ApiBody({ type: CreateArtistDto })
-  @ApiResponse({ status: 201, type: ArtistEntity })
+  @ApiResponse({ status: 201, type: Artist })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body(ValidationPipe) createArtistDto: CreateArtistDto) {
     return this.artistService.create(createArtistDto);
   }
 
   @Get()
-  @ApiResponse({ status: 200, type: [ArtistEntity] })
+  @ApiResponse({ status: 200, type: [Artist] })
   findAll() {
     return this.artistService.findAll();
   }
@@ -42,7 +42,7 @@ export class ArtistController {
   @Get(':id')
   @ApiResponse({
     status: 200,
-    type: ArtistEntity,
+    type: Artist,
   })
   @ApiResponse({
     status: 400,
@@ -60,7 +60,7 @@ export class ArtistController {
   @ApiBody({ type: UpdateArtistDto })
   @ApiResponse({
     status: 200,
-    type: ArtistEntity,
+    type: Artist,
   })
   @ApiResponse({
     status: 400,
