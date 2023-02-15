@@ -8,43 +8,39 @@ import { ArtistEntity } from './entities/artist.entity';
 
 @Injectable()
 export class ArtistService {
-  constructor(
-    @InjectRepository(ArtistEntity)
-    private readonly artistRepository: Repository<ArtistEntity>,
-  ) { }
   async create(createArtistDto: CreateArtistDto) {
-    const artist = this.artistRepository.create(createArtistDto);
-    await this.artistRepository.save(artist);
-    return artist;
+    // const artist = this.artistRepository.create(createArtistDto);
+    // await this.artistRepository.save(artist);
+    // return artist;
   }
 
   async findAll() {
-    const artist = await this.artistRepository.find();
-    return artist;
+    // const artist = await this.artistRepository.find();
+    // return artist;
   }
 
   async findOne(id: string) {
-    const artist = await this.artistRepository.findOne({ where: { id } });
-    if (!artist) {
-      throw new NotFoundException();
-    }
-    return artist;
+    // const artist = await this.artistRepository.findOne({ where: { id } });
+    // if (!artist) {
+    //   throw new NotFoundException();
+    // }
+    // return artist;
   }
 
   async update(id: string, updateArtistDto: UpdateArtistDto) {
-    await this.findOne(id);
-    const updatedArtist = await this.artistRepository.update(
-      id,
-      updateArtistDto,
-    );
-    return updatedArtist;
+    // await this.findOne(id);
+    // const updatedArtist = await this.artistRepository.update(
+    //   id,
+    //   updateArtistDto,
+    // );
+    // return updatedArtist;
   }
 
   async remove(id: string) {
-    const result = await this.artistRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException();
-    }
-    return result;
+    //   const result = await this.artistRepository.delete(id);
+    //   if (result.affected === 0) {
+    //     throw new NotFoundException();
+    //   }
+    //   return result;
   }
 }
