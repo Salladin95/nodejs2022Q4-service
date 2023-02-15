@@ -20,7 +20,6 @@ services:
     volumes:
       - ./src:/usr/src/app/src
       - /usr/src/app/node_modules
-    # command: npm run start:dev
 
   db:
     container_name: home-service-db

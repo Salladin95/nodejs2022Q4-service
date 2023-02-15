@@ -7,7 +7,6 @@ import { TrackModule } from './track/track.module';
 import { AlbumModule } from './album/album.module';
 import { FavsModule } from './favs/favs.module';
 import { manualConfig } from '../configs';
-import { PrismaClient } from '@prisma/client';
 
 @Module({
   imports: [
@@ -20,6 +19,5 @@ import { PrismaClient } from '@prisma/client';
     AlbumModule,
     FavsModule,
   ],
-  providers: [PrismaClient],
 })
 export class AppModule { }

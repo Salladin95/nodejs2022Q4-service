@@ -4,7 +4,8 @@ WORKDIR /usr/src/app
 COPY package*.json .
 RUN npm i
 COPY . .
+RUN npx prisma generate
 
 EXPOSE ${PORT}
 
-CMD ["npm", "run", "start:migrate:prod"]
+CMD ["npm", "run", "start:prisma"]
