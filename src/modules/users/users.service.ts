@@ -1,67 +1,65 @@
+import { PrismaService } from 'src/prisma/prisma.service';
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Prisma, User } from '@prisma/client';
+import { User as UserEntity } from './contracts/user.interface';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) { }
-  async create(data: CreateUserDto) {
-    return this.prisma.user.create({
+  async create(data: Prisma.UserCreateInput) {
+    const user = await this.prisma.user.create({
       data,
     });
+    return this.transform(user);
   }
 
   async findAll() {
-    // const users = await this.userRepository.find();
-    // return users;
+    const users = await this.prisma.user.findMany();
+    return users.map(this.transform);
   }
 
   async findOne(id: string) {
-    //   const user = await this.userRepository.findOne({ where: { id } });
-    //   if (!user) {
-    //     throw new NotFoundException();
-    //   }
-    //   return user;
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return this.transform(user);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    // const user = await this.userRepository.findOne({ where: { id } });
-    // if (!user) {
-    //   throw new NotFoundException();
-    // }
-    // if (user.password !== updateUserDto.oldPassword) {
-    //   throw new ForbiddenException('Passwords don"t match');
-    // }
-    //
-    // const updatedUser = { ...user, password: updateUserDto.newPassword };
-    // await this.userRepository.update(id, updatedUser);
-    // return updatedUser;
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    if (user.password !== updateUserDto.oldPassword) {
+      throw new ForbiddenException('Passwords don"t match');
+    }
+
+    await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: { password: updateUserDto.newPassword },
+    });
+    return this.transform({ ...user, password: updateUserDto.newPassword });
   }
 
   async remove(id: string) {
-    // const result = await this.userRepository.delete(id);
-    // if (result.affected === 0) {
-    //   throw new NotFoundException();
-    // }
-    // return result;
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    const result = await this.prisma.user.delete({ where: { id } });
+    return result;
   }
 
-  async findByLogin(login: string) {
-    // const user = await this.userRepository.findOne({ where: { login } });
-    // return user ? user : null;
-  }
-
-  async isLoginExist(login: string) {
-    //   const user = await this.findByLogin(login);
-    //   if (user) {
-    //     throw new BadRequestException(`User with login: ${login} already exists`);
-    //   }
+  transform(user: User) {
+    return new UserEntity(user);
   }
 }

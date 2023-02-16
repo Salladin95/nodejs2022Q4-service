@@ -12,6 +12,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Prisma } from '@prisma/client';
 
 import { ArtistService } from './artist.service';
 import { Artist } from './contracts/artist.interface';
@@ -29,7 +30,7 @@ export class ArtistController {
   @ApiBody({ type: CreateArtistDto })
   @ApiResponse({ status: 201, type: Artist })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  create(@Body(ValidationPipe) createArtistDto: CreateArtistDto) {
+  create(@Body(ValidationPipe) createArtistDto: Prisma.ArtistCreateInput) {
     return this.artistService.create(createArtistDto);
   }
 
@@ -73,7 +74,7 @@ export class ArtistController {
   @UsePipes(ValidationPipe)
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body(ValidationPipe) updateArtistDto: UpdateArtistDto,
+    @Body(ValidationPipe) updateArtistDto: Prisma.ArtistUpdateInput,
   ) {
     return this.artistService.update(id, updateArtistDto);
   }

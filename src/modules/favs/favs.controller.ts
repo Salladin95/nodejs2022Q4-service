@@ -11,7 +11,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Album } from '../../modules/album/contracts/album.interface';
 import { Artist } from '../../modules/artist/contracts/artist.interface';
-import { Track } from '../../modules/track/contracts';
+import { Track } from '../../modules/track/contracts/track.interface';
 import { FavsResponse } from './contracts';
 import { FavsService } from './favs.service';
 

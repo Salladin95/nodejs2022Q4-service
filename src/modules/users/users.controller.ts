@@ -10,14 +10,18 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './contracts/user.interface';
+import { Prisma } from '@prisma/client';
 
 @ApiTags('user')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -31,7 +35,7 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.usersService.create(createUserDto);
   }
 

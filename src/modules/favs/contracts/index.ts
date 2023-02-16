@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { Album } from '../../album/contracts/album.interface';
 import { Artist } from '../../artist/contracts/artist.interface';
-import { Track } from '../../track/contracts';
+import { Track } from '../../track/contracts/track.interface';
 
 interface Favorites {
   artists: string[];

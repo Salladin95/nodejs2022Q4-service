@@ -22,24 +22,24 @@ model Artist {
   id     String  @id @default(uuid())
   name   String
   grammy Boolean
-  albums Album?
-  tracks Track?
+  Album  Album[]
+  Track  Track[]
 }
 
 model Album {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
   year     Int
-  author   Artist @relation(fields: [artistId], references: [id])
-  artistId String @unique
+  author   Artist? @relation(fields: [artistId], references: [id])
+  artistId String?
 }
 
 model Track {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
   duration Int
-  author   Artist @relation(fields: [artistId], references: [id])
-  artistId String @unique
+  author   Artist? @relation(fields: [artistId], references: [id])
+  artistId String?
 }
 
 model Favorites {

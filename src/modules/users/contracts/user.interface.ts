@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
-import omitKeyFromObj from 'src/utils/omitKeyFromObj';
-
 class User {
   @ApiProperty()
   id: string;
@@ -23,9 +21,8 @@ class User {
   @ApiProperty({ example: '2023-02-11T09:19:58.437Z' })
   updatedAt: Date;
 
-  toResponse() {
-    const response = omitKeyFromObj<User>('password', this);
-    return response;
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
   }
 }
 

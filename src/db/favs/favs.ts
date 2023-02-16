@@ -23,9 +23,7 @@ const favsDB = (dbService: DBService) => {
     getFavs: () => ({
       artists: [],
       albums: [],
-      tracks: dbService.tracks
-        .getTracks()
-        .filter((track) => favs.tracks.includes(track.id)),
+      tracks: [],
     }),
     getFavItemID,
     addFavItem: (id: string, key: FavsOption) => {
