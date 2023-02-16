@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateAlbumDto } from './dto/create-album.dto';
+import { UpdateAlbumDto } from './dto/update-album.dto';
 
 @Injectable()
 export class AlbumService {
   constructor(private prisma: PrismaService) { }
-  async create(data: Prisma.AlbumUncheckedCreateInput) {
+  async create(data: CreateAlbumDto) {
     return this.prisma.album.create({
       data,
     });
@@ -23,7 +24,7 @@ export class AlbumService {
     return album;
   }
 
-  async update(id: string, data: Prisma.AlbumUncheckedUpdateInput) {
+  async update(id: string, data: UpdateAlbumDto) {
     const album = await this.findOne(id);
     if (!album) {
       throw new NotFoundException();
@@ -35,7 +36,7 @@ export class AlbumService {
       },
       data,
     });
-    return { ...album, data };
+    return { ...album, ...data };
   }
 
   async remove(id: string) {

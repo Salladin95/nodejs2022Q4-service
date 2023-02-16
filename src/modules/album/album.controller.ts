@@ -12,7 +12,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
 
 import { AlbumService } from './album.service';
 import { Album } from './contracts/album.interface';
@@ -33,9 +32,7 @@ export class AlbumController {
     type: Album,
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  create(
-    @Body(ValidationPipe) createAlbumDto: Prisma.AlbumUncheckedCreateInput,
-  ) {
+  create(@Body(ValidationPipe) createAlbumDto: CreateAlbumDto) {
     return this.albumService.create(createAlbumDto);
   }
 
@@ -81,7 +78,7 @@ export class AlbumController {
   })
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body(ValidationPipe) updateAlbumDto: Prisma.AlbumUncheckedUpdateInput,
+    @Body(ValidationPipe) updateAlbumDto: UpdateAlbumDto,
   ) {
     return this.albumService.update(id, updateAlbumDto);
   }
