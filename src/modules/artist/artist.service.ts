@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 import { CreateArtistDto } from './dto/create-artist.dto';
@@ -8,7 +7,7 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 @Injectable()
 export class ArtistService {
   constructor(private prisma: PrismaService) { }
-  async create(data: Prisma.ArtistCreateInput) {
+  async create(data: CreateArtistDto) {
     return this.prisma.artist.create({
       data,
     });
@@ -26,7 +25,7 @@ export class ArtistService {
     return atist;
   }
 
-  async update(id: string, data: Prisma.ArtistUpdateInput) {
+  async update(id: string, data: UpdateArtistDto) {
     const atist = await this.findOne(id);
     if (!atist) {
       throw new NotFoundException();
@@ -38,7 +37,7 @@ export class ArtistService {
       },
       data,
     });
-    return { ...atist, data };
+    return { ...atist, ...data };
   }
 
   async remove(id: string) {
