@@ -20,4 +20,4 @@ import { manualConfig } from '../configs';
     FavsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

@@ -18,7 +18,7 @@ import { FavsService } from './favs.service';
 @ApiTags('favs')
 @Controller('favs')
 export class FavsController {
-  constructor(private readonly favsService: FavsService) { }
+  constructor(private readonly favsService: FavsService) {}
 
   @Get()
   @ApiResponse({
@@ -44,7 +44,7 @@ export class FavsController {
     description: 'Unprocessable Entity',
   })
   createFavTrack(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favsService.create(id, 'tracks');
+    return this.favsService.create(id, 'track');
   }
 
   @Delete('track/:id')
@@ -61,7 +61,7 @@ export class FavsController {
     description: 'Not found',
   })
   removeFavTrack(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favsService.remove(id, 'tracks');
+    return this.favsService.remove(id, 'track');
   }
 
   @Post('album/:id')
@@ -79,7 +79,7 @@ export class FavsController {
     description: 'Unprocessable Entity',
   })
   createFavAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favsService.create(id, 'albums');
+    return this.favsService.create(id, 'album');
   }
 
   @Delete('album/:id')
@@ -96,7 +96,7 @@ export class FavsController {
     description: 'Not found',
   })
   removeFavAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favsService.remove(id, 'albums');
+    return this.favsService.remove(id, 'album');
   }
 
   @Post('artist/:id')
@@ -114,7 +114,7 @@ export class FavsController {
     description: 'Unprocessable Entity',
   })
   createFavArtist(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favsService.create(id, 'artists');
+    return this.favsService.create(id, 'artist');
   }
 
   @Delete('artist/:id')
@@ -131,6 +131,6 @@ export class FavsController {
     description: 'Not found',
   })
   removeFavArtist(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favsService.remove(id, 'artists');
+    return this.favsService.remove(id, 'artist');
   }
 }

@@ -5,7 +5,7 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 
 @Injectable()
 export class AlbumService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   async create(data: CreateAlbumDto) {
     return this.prisma.album.create({
       data,

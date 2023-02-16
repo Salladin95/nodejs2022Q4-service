@@ -4,7 +4,7 @@ import { Album } from '../../album/contracts/album.interface';
 import { Artist } from '../../artist/contracts/artist.interface';
 import { Track } from '../../track/contracts/track.interface';
 
-interface Favorites {
+export interface FavoritesEntity {
   artists: string[];
   albums: string[];
   tracks: string[];
@@ -48,4 +48,4 @@ class FavsResponse {
   tracks: Track[];
 }
 
-export { Favorites, FavsResponse };
+export { FavsResponse };
