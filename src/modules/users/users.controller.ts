@@ -18,7 +18,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './contracts/user.interface';
-import { Prisma } from '@prisma/client';
 
 @ApiTags('user')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -35,7 +34,7 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  create(@Body() createUserDto: Prisma.UserCreateInput) {
+  create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 

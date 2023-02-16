@@ -4,15 +4,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { User } from '@prisma/client';
 
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma, User } from '@prisma/client';
 import { User as UserEntity } from './contracts/user.interface';
+import { CreateUserDto } from './dto';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) { }
-  async create(data: Prisma.UserCreateInput) {
+  async create(data: CreateUserDto) {
     const user = await this.prisma.user.create({
       data,
     });
@@ -41,13 +42,16 @@ export class UsersService {
       throw new ForbiddenException('Passwords don"t match');
     }
 
-    await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: {
         id,
       },
-      data: { password: updateUserDto.newPassword },
+      data: {
+        version: user.version + 1,
+        password: updateUserDto.newPassword,
+      },
     });
-    return this.transform({ ...user, password: updateUserDto.newPassword });
+    return this.transform(updatedUser);
   }
 
   async remove(id: string) {

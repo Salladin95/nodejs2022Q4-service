@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import { Exclude, Transform } from 'class-transformer';
 
 class User {
   @ApiProperty()
@@ -15,10 +15,12 @@ class User {
   @ApiProperty({ example: 1 })
   version: number;
 
-  @ApiProperty({ example: '2023-02-11T09:19:58.437Z' })
+  @ApiProperty({ example: 1231245 })
+  @Transform(({ value }) => +new Date(value))
   createdAt: Date;
 
-  @ApiProperty({ example: '2023-02-11T09:19:58.437Z' })
+  @ApiProperty({ example: 1112313 })
+  @Transform(({ value }) => +new Date(value))
   updatedAt: Date;
 
   constructor(partial: Partial<User>) {
