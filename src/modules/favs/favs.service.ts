@@ -10,7 +10,7 @@ import { getDataObj, getFavsKey } from './utils';
 
 @Injectable()
 export class FavsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(id: string, key: string) {
     const item = await this.prisma[key].findUnique({
