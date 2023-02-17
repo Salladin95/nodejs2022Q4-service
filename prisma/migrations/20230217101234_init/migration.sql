@@ -42,27 +42,27 @@ CREATE TABLE "Track" (
 
 -- CreateTable
 CREATE TABLE "FavoriteArtist" (
-    "artistId" TEXT NOT NULL
+    "id" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "FavoriteAlbum" (
-    "albumId" TEXT NOT NULL
+    "id" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "FavoriteTrack" (
-    "trackId" TEXT NOT NULL
+    "id" TEXT NOT NULL
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "FavoriteArtist_artistId_key" ON "FavoriteArtist"("artistId");
+CREATE UNIQUE INDEX "FavoriteArtist_id_key" ON "FavoriteArtist"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "FavoriteAlbum_albumId_key" ON "FavoriteAlbum"("albumId");
+CREATE UNIQUE INDEX "FavoriteAlbum_id_key" ON "FavoriteAlbum"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "FavoriteTrack_trackId_key" ON "FavoriteTrack"("trackId");
+CREATE UNIQUE INDEX "FavoriteTrack_id_key" ON "FavoriteTrack"("id");
 
 -- AddForeignKey
 ALTER TABLE "Album" ADD CONSTRAINT "Album_artistId_fkey" FOREIGN KEY ("artistId") REFERENCES "Artist"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -74,10 +74,10 @@ ALTER TABLE "Track" ADD CONSTRAINT "Track_artistId_fkey" FOREIGN KEY ("artistId"
 ALTER TABLE "Track" ADD CONSTRAINT "Track_albumId_fkey" FOREIGN KEY ("albumId") REFERENCES "Album"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FavoriteArtist" ADD CONSTRAINT "FavoriteArtist_artistId_fkey" FOREIGN KEY ("artistId") REFERENCES "Artist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "FavoriteArtist" ADD CONSTRAINT "FavoriteArtist_id_fkey" FOREIGN KEY ("id") REFERENCES "Artist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FavoriteAlbum" ADD CONSTRAINT "FavoriteAlbum_albumId_fkey" FOREIGN KEY ("albumId") REFERENCES "Album"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "FavoriteAlbum" ADD CONSTRAINT "FavoriteAlbum_id_fkey" FOREIGN KEY ("id") REFERENCES "Album"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FavoriteTrack" ADD CONSTRAINT "FavoriteTrack_trackId_fkey" FOREIGN KEY ("trackId") REFERENCES "Track"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "FavoriteTrack" ADD CONSTRAINT "FavoriteTrack_id_fkey" FOREIGN KEY ("id") REFERENCES "Track"("id") ON DELETE CASCADE ON UPDATE CASCADE;

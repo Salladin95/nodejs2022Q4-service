@@ -9,6 +9,14 @@ export interface FavoritesEntity {
   albums: string[];
   tracks: string[];
 }
+export type FavsEntityOption = 'artist' | 'album' | 'track';
+export type FavsOption = 'favoriteAlbum' | 'favoriteArtist' | 'favoriteTrack';
+
+export enum FavsEntityEnum {
+  artist = 'artist',
+  album = 'album',
+  track = 'track',
+}
 
 class FavsResponse {
   @ApiProperty({
