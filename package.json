@@ -13,7 +13,7 @@
     "start:dev": "nest start --watch",
     "generate": "npx prisma migrate dev --name",
     "start:prisma": "npx prisma migrate dev && npm run start:dev",
-    "scan": "docker scan nodejs2022q4-service-app",
+    "scan": "docker scan home-service-app",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

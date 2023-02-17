@@ -4,6 +4,7 @@ version: '3.8'
 services:
   app:
     container_name: home-service-app
+    image: home-service-app
     build: .
     ports:
       - ${PORT}:${PORT}
@@ -23,6 +24,7 @@ services:
 
   db:
     container_name: home-service-db
+    image: home-service-db
     build: ./database/
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
