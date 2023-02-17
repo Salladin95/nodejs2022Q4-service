@@ -10,18 +10,16 @@ import { getDataObj, getFavsKey } from './utils';
 
 @Injectable()
 export class FavsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(id: string, key: string) {
-    const favsKey = getFavsKey[key]();
     const item = await this.prisma[key].findUnique({
       where: { id },
     });
     if (!item) {
       throw new UnprocessableEntityException();
     }
-    await this.prisma[favsKey].create(getDataObj(id));
-    return item;
+    return this.prisma[getFavsKey[key]()].create(getDataObj(id));
   }
 
   async findAll() {
@@ -45,21 +43,18 @@ export class FavsService {
 
   async getOriginalItems(favsKey: FavsOption, itemTableKey: FavsEntityOption) {
     const listOfId = await this.getListOfFavsByKey(favsKey);
-    const items = await this.getItemsFromIDS(itemTableKey, listOfId);
-    return items;
+    return this.getItemsFromIDS(itemTableKey, listOfId);
   }
 
   async getListOfFavsByKey(favsKey: string) {
-    const listOfId = await this.prisma[favsKey].findMany();
-    return listOfId;
+    return this.prisma[favsKey].findMany();
   }
 
   async getItemsFromIDS(itemTableKey: string, items: { id: string }[]) {
-    const result = await Promise.all(
+    return Promise.all(
       items.map((item) =>
         this.prisma[itemTableKey].findUnique({ where: { id: item.id } }),
       ),
     );
-    return result;
   }
 }
