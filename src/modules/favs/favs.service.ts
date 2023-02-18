@@ -38,7 +38,9 @@ export class FavsService {
     if (!item) {
       throw new NotFoundException();
     }
-    await this.prisma[favsKey].delete({ where: { id } });
+    await this.prisma[favsKey].delete({
+      where: { id },
+    });
   }
 
   async getOriginalItems(favsKey: FavsOption, itemTableKey: FavsEntityOption) {
