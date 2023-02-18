@@ -26,6 +26,8 @@ npm install
 ## Running application
 
 ```
+docker compose up
+
 npm start
 ```
 
@@ -36,8 +38,6 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 ## Testing
 
 After application running open new terminal and enter:
-
-To run all tests without authorization
 
 ```
 npm run test
@@ -54,12 +54,10 @@ npm run test:favs
 ```
 
 ```
-
 ### Auto-fix and format
+```
 
-```
 npm run lint
-```
 
 ```
 npm run format
