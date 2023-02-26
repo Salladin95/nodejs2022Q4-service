@@ -9,13 +9,17 @@ import { User } from '@prisma/client';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User as UserEntity } from './contracts/user.interface';
 import { CreateUserDto } from './dto';
+import { checkPassword, encodePassword } from 'src/utils/bcrypt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
-  async create(data: CreateUserDto) {
+  constructor(private prisma: PrismaService, private config: ConfigService) {}
+  async create({ login, password }: CreateUserDto) {
+    const salt = this.config.get('jwt.salt');
+    const hash = await encodePassword(password, salt);
     const user = await this.prisma.user.create({
-      data,
+      data: { login, password: hash },
     });
     return this.transform(user);
   }
@@ -33,12 +37,23 @@ export class UsersService {
     return this.transform(user);
   }
 
+  async findOneByLogin(login: string) {
+    const user = await this.prisma.user.findUnique({ where: { login } });
+    return user ? this.transform(user) : null;
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     if (!user) {
       throw new NotFoundException();
     }
-    if (user.password !== updateUserDto.oldPassword) {
+
+    const passwordMatch = await checkPassword(
+      updateUserDto.oldPassword,
+      user.password,
+    );
+
+    if (!passwordMatch) {
       throw new ForbiddenException('Passwords don"t match');
     }
 
