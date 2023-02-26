@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class JwtRefreshByHandStrategy implements CanActivate {
+export class JwtRefreshByHandGuard implements CanActivate {
   constructor(
     private readonly config: ConfigService,
     private readonly jwtService: JwtService,
@@ -25,14 +25,12 @@ export class JwtRefreshByHandStrategy implements CanActivate {
         secret: this.config.get('jwt.refreshTokenSecret'),
         ignoreExpiration: false,
       })
-      .then((isTokenValid) => {
-        if (!isTokenValid) {
-          console.log('token is not valid');
-          throw new ForbiddenException('Token is not valid');
-        } else {
-          console.log('token is valid', isTokenValid);
-          return true;
-        }
+      .then(({ userId, login }) => {
+        req['user'] = { userId, login };
+        return true;
+      })
+      .catch(() => {
+        throw new ForbiddenException('Invalid token');
       });
   }
 }

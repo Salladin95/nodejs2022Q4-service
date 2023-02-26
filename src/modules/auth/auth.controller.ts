@@ -13,8 +13,7 @@ import {
 import { CreateUserDto } from '../users/dto';
 
 import { AuthService } from './auth.service';
-import { JwtRefreshAuthGuard } from './guards/refreshToken.guard';
-import { JwtRefreshByHandAuthGuard } from './guards/refreshTokenByHand.guard';
+import { JwtRefreshByHandGuard } from './guards/jwt-refreshByHand.guard';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
@@ -34,7 +33,7 @@ export class AuthController {
     return this.authService.login(userDto);
   }
 
-  @UseGuards(JwtRefreshByHandAuthGuard)
+  @UseGuards(JwtRefreshByHandGuard)
   @Post('refresh')
   @UsePipes(ValidationPipe)
   async refresh(@Request() req) {
