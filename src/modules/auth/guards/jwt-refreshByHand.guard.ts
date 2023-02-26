@@ -7,6 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
+import { invalidTokenMsg } from 'src/utils';
 
 @Injectable()
 export class JwtRefreshByHandGuard implements CanActivate {
@@ -30,7 +31,7 @@ export class JwtRefreshByHandGuard implements CanActivate {
         return true;
       })
       .catch(() => {
-        throw new ForbiddenException('Invalid token');
+        throw new ForbiddenException(invalidTokenMsg);
       });
   }
 }

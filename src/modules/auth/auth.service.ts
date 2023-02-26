@@ -1,11 +1,16 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { passwordsDontMatchMsg, userNotExist } from 'src/utils';
+import {
+  invalidTokenMsg,
+  passwordsDontMatchMsg,
+  userNotExist,
+} from 'src/utils';
 import { checkPassword } from 'src/utils/bcrypt';
 import { CreateUserDto } from '../users/dto';
 import { UsersService } from '../users/users.service';
 import { JwtPayload } from './contracts';
+import { CreateAuthDto } from './dto/refresh.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,9 +39,20 @@ export class AuthService {
     return tokens;
   }
 
-  async refresh(payload: JwtPayload) {
-    const tokens = await this.getTokens(payload);
-    return tokens;
+  async refresh({ refreshToken }: CreateAuthDto) {
+    try {
+      const { login, userId } = await this.jwtService.verifyAsync(
+        refreshToken,
+        {
+          secret: this.config.get('jwt.refreshTokenSecret'),
+          ignoreExpiration: false,
+        },
+      );
+      const tokens = await this.getTokens({ userId, login });
+      return tokens;
+    } catch {
+      throw new ForbiddenException(invalidTokenMsg);
+    }
   }
 
   async getTokens(payload: JwtPayload) {

@@ -7,12 +7,12 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   HttpCode,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto';
 
 import { AuthService } from './auth.service';
+import { CreateAuthDto } from './dto/refresh.dto';
 import { JwtRefreshByHandGuard } from './guards/jwt-refreshByHand.guard';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -36,7 +36,7 @@ export class AuthController {
   @UseGuards(JwtRefreshByHandGuard)
   @Post('refresh')
   @UsePipes(ValidationPipe)
-  async refresh(@Request() req) {
-    return this.authService.refresh(req.user);
+  async refresh(@Body() refreshDto: CreateAuthDto) {
+    return this.authService.refresh(refreshDto);
   }
 }
