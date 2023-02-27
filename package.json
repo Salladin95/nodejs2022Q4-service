@@ -23,7 +23,7 @@
     "test:tracks": "jest  ./test/tracks.*.ts",
     "test:albums": "jest  ./test/albums.*.ts",
     "test:favs": "jest  ./test/favorites.*.ts",
-    "test:auth": "cross-env TEST_MODE=auth jest --config ./test/jest-e2e.json",
+    "test:auth": "cross-env TEST_MODE=auth jest --config ./test/jest-e2e.json --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
