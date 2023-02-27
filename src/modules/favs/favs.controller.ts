@@ -6,16 +6,19 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Album } from '../../modules/album/contracts/album.interface';
 import { Artist } from '../../modules/artist/contracts/artist.interface';
 import { Track } from '../../modules/track/contracts/track.interface';
+import { JwtAccessAuthGuard } from '../auth/guards';
 import { FavsResponse } from './contracts';
 import { FavsService } from './favs.service';
 
 @ApiTags('favs')
+@UseGuards(JwtAccessAuthGuard)
 @Controller('favs')
 export class FavsController {
   constructor(private readonly favsService: FavsService) {}

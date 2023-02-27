@@ -12,15 +12,18 @@ import {
   ValidationPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './contracts/user.interface';
+import { JwtAccessAuthGuard } from '../auth/guards';
 
 @ApiTags('user')
 @UseInterceptors(ClassSerializerInterceptor)
+@UseGuards(JwtAccessAuthGuard)
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

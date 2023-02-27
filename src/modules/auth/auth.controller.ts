@@ -13,7 +13,7 @@ import { CreateUserDto } from '../users/dto';
 
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/refresh.dto';
-import { JwtRefreshByHandGuard } from './guards/jwt-refreshByHand.guard';
+import { JwtRefreshByHandGuard } from './guards/';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
