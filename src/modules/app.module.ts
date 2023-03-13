@@ -6,18 +6,20 @@ import { ArtistModule } from './artist/artist.module';
 import { TrackModule } from './track/track.module';
 import { AlbumModule } from './album/album.module';
 import { FavsModule } from './favs/favs.module';
-import { manualConfig } from '../configs';
+import { jwtConfig, manualConfig } from '../configs';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [manualConfig],
+      load: [manualConfig, jwtConfig],
     }),
     UsersModule,
     ArtistModule,
     TrackModule,
     AlbumModule,
     FavsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

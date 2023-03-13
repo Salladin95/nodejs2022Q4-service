@@ -10,6 +10,7 @@ import {
   ValidationPipe,
   Put,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -17,8 +18,10 @@ import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './contracts/track.interface';
+import { JwtAccessAuthGuard } from '../auth/guards';
 
 @ApiTags('track')
+@UseGuards(JwtAccessAuthGuard)
 @Controller('track')
 @UsePipes(ValidationPipe)
 export class TrackController {

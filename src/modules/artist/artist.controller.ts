@@ -10,8 +10,10 @@ import {
   ValidationPipe,
   UsePipes,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAccessAuthGuard } from '../auth/guards';
 
 import { ArtistService } from './artist.service';
 import { Artist } from './contracts/artist.interface';
@@ -19,6 +21,7 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 
 @ApiTags('artist')
+@UseGuards(JwtAccessAuthGuard)
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}

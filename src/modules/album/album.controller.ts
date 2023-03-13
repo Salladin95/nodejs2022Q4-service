@@ -10,8 +10,10 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAccessAuthGuard } from '../auth/guards';
 
 import { AlbumService } from './album.service';
 import { Album } from './contracts/album.interface';
@@ -19,6 +21,7 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 
 @ApiTags('album')
+@UseGuards(JwtAccessAuthGuard)
 @Controller('album')
 @UsePipes(ValidationPipe)
 export class AlbumController {

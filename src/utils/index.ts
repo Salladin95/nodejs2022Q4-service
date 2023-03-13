@@ -2,6 +2,14 @@ import {
   notFoundMsg,
   passwordsDontMatchMsg,
   userAlreadyExistMsg,
+  userNotExist,
+  invalidTokenMsg,
 } from './constants';
 
-export { passwordsDontMatchMsg, notFoundMsg, userAlreadyExistMsg };
+export {
+  invalidTokenMsg,
+  passwordsDontMatchMsg,
+  notFoundMsg,
+  userAlreadyExistMsg,
+  userNotExist,
+};
