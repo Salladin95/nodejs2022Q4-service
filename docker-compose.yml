@@ -1,0 +1,50 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  app:
+    container_name: home-service-app
+    image: home-service-app
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+    networks:
+      - net
+    volumes:
+      - ./src:/usr/src/app/src
+      - /usr/src/app/node_modules
+
+  db:
+    container_name: home-service-db
+    image: home-service-db
+    build: ./database/
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - net
+
+volumes:
+  pgdata:
+    driver: local
+  app:
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.220.0/24
